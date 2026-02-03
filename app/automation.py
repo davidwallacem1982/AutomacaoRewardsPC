@@ -104,10 +104,6 @@ def abrir_edge_detalhamentos_pontos(
 
         log_safe(log_callback, f"🖱️ Clicando em {nome}")
 
-        # fazer essa logica de outra forma
-        # if passo == "abrir_pc_search":
-        #     pc_search_completo(config["pc_search_region"], log_callback)
-        #     stop_event
         ptg.click(*config[passo])
 
         if not sleep_seguro(2, stop_event):
@@ -135,25 +131,15 @@ def pc_search_completo(region, log_callback=None):
     texto_limpo = texto.strip().replace("\n", " ")
     log_safe(log_callback, f"🔍 OCR detectado: {texto_limpo}")
 
-    match = re.search(r"(\d+)\s*/\s*(\d+)", texto_limpo)
-    if not match:
-        return False
+    matches = re.findall(r"(\d+)\s*/\s*(\d+)", texto_limpo)
 
-    atual = int(match.group(1))
-    maximo = int(match.group(2))
+    for atual_str, maximo_str in matches:
+        if maximo_str == "90":
+            atual = int(atual_str)
+            maximo = 90
+            log_safe(log_callback, f"📊 Progresso detectado: {atual}/{maximo}")
+            return atual >= 90
 
-    log_safe(log_callback, f"📊 Progresso: {atual}/{maximo}")
-
-    # Fazer de outra forma
-    # if maximo != 90:
-    #     log_safe(
-    #         log_callback,
-    #         f"⚠️ Valor máximo inesperado detectado: {maximo}, necessário atualização do sistema, entre en contado com o suporte.",
-    #     )
-    #     fechar_browser(log_callback)
-
-    if atual == 90:
-        return True
     return False
 
 

@@ -1,18 +1,47 @@
 import json
+import sys
 import time
 from pathlib import Path
 
 import customtkinter as ctk
 import pyautogui as ptg
+from PIL import Image, ImageTk  # Pillow
 
 from app.config import REGION_KEY, REQUIRED_CLICK_KEYS, RESOLUCOES
 
 CALIB_PATH = Path(__file__).parent / "calibration.json"
 
 
+# ===== INICIANDO O ÍCONE =====
+def resource_path(relative_path: str) -> Path:
+    """Retorna o caminho correto para arquivos no PyInstaller ou modo normal"""
+    if hasattr(sys, "_MEIPASS"):
+        return Path(sys._MEIPASS) / relative_path
+    return Path(__file__).parent / relative_path
+
+
 class Calibrator(ctk.CTkToplevel):
     def __init__(self, master, resolution_name: str):
         super().__init__(master)
+
+        # ===== ÍCONE DA JANELA (CORRETO) =====
+        icon_ico = resource_path("app/assets/icon.ico")
+        icon_png = resource_path("app/assets/icon.png")
+
+        try:
+            if icon_ico.exists():
+                self.iconbitmap(str(icon_ico))
+        except Exception as e:
+            print("Erro iconbitmap:", e)
+
+        try:
+            if icon_png.exists():
+                img = Image.open(icon_png)
+                self._icon_photo = ImageTk.PhotoImage(img)  # NÃO pode ser local
+                self.iconphoto(True, self._icon_photo)
+        except Exception as e:
+            print("Erro iconphoto:", e)
+
         self.title("Calibragem de Coordenadas")
         self.resolution_name = resolution_name
         self.posicoes = {}
@@ -22,13 +51,13 @@ class Calibrator(ctk.CTkToplevel):
             self,
             text=(
                 "Siga as instruções e clique em 'Capturar' para cada item. "
-                "Para evitar mover o mouse ao clicar no botão, posicione o mouse no alvo "
+                "Para evitar mover o mouse ao clicar no botão, \nposicione o mouse no alvo "
                 "e pressione Enter (tecla) para capturar sem usar o mouse)."
             ),
         )
         self.label.pack(pady=8)
 
-        self.listbox = ctk.CTkTextbox(self, width=420, height=200)
+        self.listbox = ctk.CTkTextbox(self, width=550, height=200)
         self.listbox.pack(pady=8)
         self.listbox.configure(state="disabled")
 
@@ -102,7 +131,7 @@ class Calibrator(ctk.CTkToplevel):
         key = self._capture_order[self._current_index]
         if key == REGION_KEY:
             self._append_log(
-                "Agora capture a região do PC Search: primeiro posicione o mouse no canto superior esquerdo da região e clique 'Capturar próximo', depois posicione no canto inferior direito e clique novamente."
+                "Agora capture a região do PC Search: primeiro posicione o mouse no canto superior esquerdo da região e clique 'Capturar próximo', depois posicione no canto inferior direito e aperte ENTER."
             )
         else:
             self._append_log(

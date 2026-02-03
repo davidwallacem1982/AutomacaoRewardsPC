@@ -26,6 +26,25 @@ def resource_path(relative_path: str) -> Path:
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
+
+        # ===== ÍCONE DA JANELA (CORRETO) =====
+        icon_ico = resource_path("app/assets/icon.ico")
+        icon_png = resource_path("app/assets/icon.png")
+
+        try:
+            if icon_ico.exists():
+                self.iconbitmap(str(icon_ico))
+        except Exception as e:
+            print("Erro iconbitmap:", e)
+
+        try:
+            if icon_png.exists():
+                img = Image.open(icon_png)
+                self._icon_photo = ImageTk.PhotoImage(img)  # NÃO pode ser local
+                self.iconphoto(True, self._icon_photo)
+        except Exception as e:
+            print("Erro iconphoto:", e)
+
         # título da janela
         try:
             self.title("Automação Microsoft Rewards")
@@ -73,10 +92,11 @@ class App(ctk.CTk):
         # botões básicos que algumas rotinas assumem existir
         self.btn_start = ctk.CTkButton(
             controls_frame,
-            text="▶ Iniciar",
+            text="Iniciar",
             command=self.iniciar,
             width=btn_w,
             height=btn_h,
+            fg_color="#1e90ff",
             corner_radius=btn_radius,
             image=self._icons.get("start"),
         )
@@ -147,10 +167,11 @@ class App(ctk.CTk):
                 pass
         self.btn_calibrate = ctk.CTkButton(
             controls_frame,
-            text="🧭 Calibrar",
+            text="Calibrar",
             command=self.abrir_calibracao,
             width=btn_w,
             height=btn_h,
+            fg_color="#5a6368",
             corner_radius=btn_radius,
             image=self._icons.get("calibrate"),
         )
@@ -232,6 +253,7 @@ class App(ctk.CTk):
             command=self.auto_generate_all,
             width=btn_w,
             height=btn_h,
+            fg_color="#10a5b0",
             corner_radius=btn_radius,
             image=self._icons.get("auto"),
         )
@@ -256,6 +278,7 @@ class App(ctk.CTk):
             command=self.export_calibrations,
             width=btn_w,
             height=btn_h,
+            fg_color="#4fc3f7",
             corner_radius=btn_radius,
             image=self._icons.get("export"),
         )
@@ -268,6 +291,7 @@ class App(ctk.CTk):
             command=self.import_calibrations,
             width=btn_w,
             height=btn_h,
+            fg_color="#4caf50",
             corner_radius=btn_radius,
             image=self._icons.get("import"),
         )
@@ -280,6 +304,7 @@ class App(ctk.CTk):
             state="disabled",
             width=btn_w,
             height=btn_h,
+            fg_color="#6c757d",
             corner_radius=btn_radius,
             image=self._icons.get("undo"),
         )
@@ -297,7 +322,9 @@ class App(ctk.CTk):
             fg_color="#d9534f",
             image=self._icons.get("stop"),
         )
-        self.btn_stop.grid(row=4, column=0, columnspan=3, pady=(10, 0), padx=6, sticky="ew")
+        self.btn_stop.grid(
+            row=4, column=0, columnspan=3, pady=(10, 0), padx=6, sticky="ew"
+        )
 
         self.log_box = ctk.CTkTextbox(self, width=400, height=260)
         # place log box using grid to avoid mixing pack/grid on the root
@@ -607,8 +634,3 @@ class App(ctk.CTk):
                 self.log("❌ Falha ao restaurar backup")
         except Exception as e:
             self.log(f"❌ Erro ao restaurar backup: {e}")
-
-
-# if __name__ == "__main__":
-#     app = App()
-#     app.mainloop()

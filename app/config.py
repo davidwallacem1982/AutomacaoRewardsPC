@@ -1,14 +1,15 @@
 # config.py
+import json
 
 RESOLUCOES = {
-    "1920x1080": {
-        "botao_microsoft_rewards": (266, 156),
-        "detalhamentos_pontos": (224, 89),
-        "abrir_pc_search": (934, 321),
-        "barra_pesquisa": (937, 328),
-        "aba_pesquisa": (535, 391),
-        "aba_principal": (155, 18),
-        "pc_search_region": (480, 260, 420, 200),
+    "1280x1024": {
+        "botao_microsoft_rewards": (111, 94),
+        "detalhamentos_pontos": (934, 321),
+        "abrir_pc_search": (531, 433),
+        "barra_pesquisa": (193, 159),
+        "aba_pesquisa": (380, 23),
+        "aba_principal": (120, 20),
+        "pc_search_region": (380, 300, 360, 210),
     },
     "1366x768": {
         "botao_microsoft_rewards": (220, 140),
@@ -19,14 +20,14 @@ RESOLUCOES = {
         "aba_principal": (130, 15),
         "pc_search_region": (400, 220, 350, 170),
     },
-    "1280x1024": {
-        "botao_microsoft_rewards": (111, 94),
-        "detalhamentos_pontos": (934, 321),
-        "abrir_pc_search": (531, 433),
-        "barra_pesquisa": (193, 159),
-        "aba_pesquisa": (380, 23),
-        "aba_principal": (120, 20),
-        "pc_search_region": (380, 300, 360, 210),
+    "1920x1080": {
+        "botao_microsoft_rewards": (266, 156),
+        "detalhamentos_pontos": (224, 89),
+        "abrir_pc_search": (934, 321),
+        "barra_pesquisa": (937, 328),
+        "aba_pesquisa": (535, 391),
+        "aba_principal": (155, 18),
+        "pc_search_region": (480, 260, 420, 200),
     },
 }
 
@@ -49,8 +50,6 @@ REQUIRED_CLICK_KEYS = [
     "aba_principal",
 ]
 REGION_KEY = "pc_search_region"
-
-import json
 
 
 def _parse_resolucao_str(name: str):
