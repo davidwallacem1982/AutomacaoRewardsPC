@@ -36,10 +36,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: AutoRewardsPC-Windows
-          path: dist/AutoRewardsPC.exe
+          path: dist/AutoRewardsPC/AutoRewardsPC.exe
+          if-no-files-found: error
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/AutoRewardsPC.exe
+          files: dist/AutoRewardsPC/AutoRewardsPC.exe
           generate_release_notes: true
+
+      - name: Inspect dist folder
+        run: Get-ChildItem dist -Recurse
