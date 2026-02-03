@@ -37,7 +37,7 @@ TEMPOS = {
     "alto": 3,
 }
 
-BROWSERS = {"Edge": "edge", "Chrome": "chrome", "Chromium": "chromium"}
+BROWSERS = {"Edge": "msedge", "Chrome": "chrome"}
 
 
 # Validador simples para checar formato das resoluções
